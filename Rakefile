@@ -37,11 +37,11 @@ end
 
 namespace :benchmark do
 	task :small do
-		sh "plotty -n small -x '1:*2:256' -y 'Rate: (\\d+\\.\\d+)req/s; Latency: (\\d+\\.\\d+)ms' -e 'set terminal svg size 800, 600 enhanced; set key left above' -- 'wrk -s output.lua -c $x -t $x -d 1 http://falcon/small' 'wrk -s output.lua -c $x -t $x -d 1 http://passenger/small' > small.svg"
+		sh "plotty -n small -x '1:*2:512' -y 'Rate: (\\d+\\.\\d+)req/s; Latency: (\\d+\\.\\d+)ms' -e 'set terminal svg size 800, 600 enhanced; set key left above' -- 'wrk -s output.lua -c $x -t $x -d 1 http://falcon/small' 'wrk -s output.lua -c $x -t $x -d 1 http://passenger/small' > small.svg"
 	end
 	
 	task :large do
-		sh "plotty -n large -x '1:*2:256' -y 'Rate: (\\d+\\.\\d+)req/s; Latency: (\\d+\\.\\d+)ms' -e 'set terminal svg size 800, 600 enhanced; set key left above' -- 'wrk -s output.lua -c $x -t $x -d 1 http://falcon/large' 'wrk -s output.lua -c $x -t $x -d 1 http://passenger/large' > large.svg"
+		sh "plotty -n large -x '1:*2:512' -y 'Rate: (\\d+\\.\\d+)req/s; Latency: (\\d+\\.\\d+)ms' -e 'set terminal svg size 800, 600 enhanced; set key left above' -- 'wrk -s output.lua -c $x -t $x -d 1 http://falcon/large' 'wrk -s output.lua -c $x -t $x -d 1 http://passenger/large' > large.svg"
 	end
 	
 	task :sleep do
