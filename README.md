@@ -4,6 +4,8 @@ This is a synthetic benchmark comparing passenger with falcon.
 
 ## Usage
 
+**This benchmark will only work on Arch Linux at the current time.**
+
 First, generate the systems:
 
 	rake falcon:base falcon:setup passenger:base passenger:setup
