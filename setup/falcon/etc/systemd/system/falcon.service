@@ -1,0 +1,12 @@
+[Unit]
+Description=Falcon
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/srv/http/benchmark
+ExecStart=falcon serve --bind http://[::]:80
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

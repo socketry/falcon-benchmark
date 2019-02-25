@@ -1,2 +1,3 @@
-falcon/
-passenger/
+*.lck
+/falcon/
+/passenger/
