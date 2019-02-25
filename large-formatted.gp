@@ -19,7 +19,7 @@ set style line 3 lt 2 lc rgb "blue" lw 3
 set style line 4 lt 2 lc rgb "blue" lw 1 dt 2
 
 plot \
-	'small.txt' using 1:2 with lines title "http://falcon/small" axis x1y1 ls 1, \
-	'small.txt' using 1:3 with lines title "falcon latency (ms)" axis x1y2 ls 2, \
-	'small.txt' using 1:4 with lines title "http://passenger/small" axis x1y1 ls 3, \
-	'small.txt' using 1:5 with lines title "passenger latency (ms)" axis x1y2 ls 4
+	'large.txt' using 1:2 with lines title "falcon requests" axis x1y1 ls 1, \
+	'large.txt' using 1:3 with lines title "falcon latency" axis x1y2 ls 2, \
+	'large.txt' using 1:4 with lines title "passenger requests" axis x1y1 ls 3, \
+	'large.txt' using 1:5 with lines title "passenger latency" axis x1y2 ls 4
