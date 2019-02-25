@@ -2,33 +2,14 @@
 
 This is a synthetic benchmark comparing passenger with falcon.
 
-## Small benchmark
+## Small Response Benchmark
 
-```bash
-% plotty -x '10:10:300' -y 'Requests/sec:\s*(\d+\.\d+)' -e "set terminal dumb; set key above" -- 'wrk -c $x -t $x -d 4 http://10.0.0.18/small' 'wrk -c $x -t $x -d 4 http://10.0.0.12/small'
+![Graph](small.svg)
 
-                                                                               
-                wrk -c $x -t $x -d 4 http://10.0.0.18/small *******            
-                wrk -c $x -t $x -d 4 http://10.0.0.12/small #######            
-  34000 +------------------------------------------------------------------+   
-        |          +          +           +          +          +          |   
-  32000 |-+                                             ###     ######## +-|   
-        |                                           ####   ### #        # #|   
-  30000 |-+                                    #####          #          #-|   
-        |                                  ####                            |   
-  28000 |-+                              ##                              +-|   
-        |                              ##                                  |   
-  26000 |-+                           #                                  +-|   
-        |              ***      ***   #    **   ******     ****            |   
-  24000 |-+     **   **   *   **   * # ****  *  *     *   *   *   ****** +-|   
-        |   ****  *  *    *   *     #  *     * *      * **     *  *     * *|   
-  22000 |-+ *     * *      * *      # *       **       *       * *      *+*|   
-        |  *       **      * *     # **       *                 **       * |   
-  20000 |-+*       *        *      # *                          *        +-|   
-        | *                 *     #                                        |   
-  18000 |-##############          #                                      +-|   
-        |          +    ##########        +          +          +          |   
-  16000 +------------------------------------------------------------------+   
-        0          50        100         150        200        250        300  
+## Large Response Benchmark
 
-```
+![Graph](large.svg)
+
+## Sleep Response Benchmark
+
+![Graph](sleep.svg)
