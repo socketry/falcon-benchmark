@@ -23,15 +23,15 @@ To run benchmarks:
 
 ### Small Response Benchmark
 
-![Graph](small.svg)
+![Graph](benchmark/small.svg)
 
 ### Large Response Benchmark
 
-![Graph](large.svg)
+![Graph](benchmark/large.svg)
 
 ### Sleep Response Benchmark
 
-![Graph](sleep.svg)
+![Graph](benchmark/sleep.svg)
 
 ## System Details
 
