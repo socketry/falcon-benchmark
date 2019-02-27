@@ -23,10 +23,10 @@ class Benchmark
 		SMALL
 	end
 	
-	BIG = [200, {}, ["Hello World\n" * 100] * 100].freeze
+	LARGE = [200, {}, ["Hello World\n" * 100] * 100].freeze
 	
-	def big(env)
-		BIG
+	def large(env)
+		LARGE
 	end
 	
 	def call(env)
@@ -44,5 +44,5 @@ end
 
 use Benchmark
 
-run lambda {|env| [200, {}, ["Hello World"]]}
+run lambda {|env| [404, {}, ["Not Found"]]}
 

@@ -1,4 +1,6 @@
 
+load File.expand_path('benchmark/benchmark.rake', __dir__)
+
 namespace :falcon do
 	task :base do
 		sh "mkdir -p falcon"
@@ -35,16 +37,38 @@ namespace :passenger do
 	end
 end
 
-namespace :benchmark do
-	task :small do
-		sh "plotty -n small -x '1:*2:512' -y 'Rate: (\\d+\\.\\d+)req/s; Latency: (\\d+\\.\\d+)ms' -e 'set terminal svg size 800, 600 enhanced; set key left above' -- 'wrk -s output.lua -c $x -t $x -d 1 http://falcon/small' 'wrk -s output.lua -c $x -t $x -d 1 http://passenger/small' > small.svg"
+namespace :puma do
+	task :base do
+		sh "mkdir -p puma"
+		sh "sudo pacstrap -c puma base base-devel postgresql git ruby ruby-rake ruby-bundler"
 	end
 	
-	task :large do
-		sh "plotty -n large -x '1:*2:512' -y 'Rate: (\\d+\\.\\d+)req/s; Latency: (\\d+\\.\\d+)ms' -e 'set terminal svg size 800, 600 enhanced; set key left above' -- 'wrk -s output.lua -c $x -t $x -d 1 http://falcon/large' 'wrk -s output.lua -c $x -t $x -d 1 http://passenger/large' > large.svg"
+	task :setup do
+		sh "sudo cp -r setup/base/* puma/"
+		sh "sudo cp -r setup/puma/* puma/"
+
+		sh "sudo arch-chroot puma rake setup"
 	end
 	
-	task :sleep do
-		sh "plotty -n sleep -x '1:*2:1024' -y 'Rate: (\\d+\\.\\d+)req/s; Latency: (\\d+\\.\\d+)ms; Errors: (\\d+\\.\\d+)req/s' -e 'set terminal svg size 800, 600 enhanced; set key left above' -- 'wrk -s output.lua -c $x -t $x -d 1 http://falcon/sleep' 'wrk -s output.lua -c $x -t $x -d 1 http://passenger/sleep' > sleep.svg"
+	task :run do
+		sh "sudo systemd-nspawn --network-veth --boot -D puma"
+	end
+end
+
+namespace :passenger_standalone do
+	task :base do
+		sh "mkdir -p passenger-standalone"
+		sh "sudo pacstrap -c passenger-standalone base base-devel postgresql git ruby ruby-rake ruby-bundler passenger"
+	end
+	
+	task :setup do
+		sh "sudo cp -r setup/base/* passenger-standalone/"
+		sh "sudo cp -r setup/passenger-standalone/* passenger-standalone/"
+
+		sh "sudo arch-chroot passenger-standalone rake setup"
+	end
+	
+	task :run do
+		sh "sudo systemd-nspawn --network-veth --boot -D passenger-standalone"
 	end
 end

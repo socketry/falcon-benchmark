@@ -1,3 +1,6 @@
 *.lck
 /falcon/
 /passenger/
+/puma/
+/passenger-standalone/
+/systems/

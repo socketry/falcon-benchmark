@@ -1,0 +1,9 @@
+
+# Load all rake tasks:
+import(*Dir.glob('tasks/**/*.rake'))
+
+task :setup => [:network, :locale, :postgres] do
+	sh "rm -f /etc/gemrc"
+	sh "gem install puma"
+	sh "systemctl enable puma"
+end
