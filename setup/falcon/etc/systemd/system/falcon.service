@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/srv/http/benchmark
-ExecStart=falcon serve --bind http://[::]:80
+ExecStart=falcon serve --bind http://[::]:80 --hybrid --count 128
 Restart=on-failure
 
 [Install]

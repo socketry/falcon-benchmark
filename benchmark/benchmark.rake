@@ -36,11 +36,17 @@ namespace :benchmark do
 		end
 	end
 	
-	task :sleep do
-		commands_for("sleep") do |name, commands, output|
+	task :blocking do
+		commands_for("blocking") do |name, commands, output|
 			sh "plotty", "-n", name, "-x", X512, "-y", PATTERN, "--", *commands, chdir: __dir__, out: output
 		end
 	end
 	
-	task :all => [:small, :large, :sleep]
+	task :nonblocking do
+		commands_for("nonblocking") do |name, commands, output|
+			sh "plotty", "-n", name, "-x", X512, "-y", PATTERN, "--", *commands, chdir: __dir__, out: output
+		end
+	end
+	
+	task :all => [:small, :large, :blocking, :nonblocking]
 end

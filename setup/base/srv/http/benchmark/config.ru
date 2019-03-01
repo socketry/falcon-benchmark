@@ -9,7 +9,13 @@ class Benchmark
 	
 	SMALL = [200, {}, ["Hello World\n" * 10] * 10].freeze
 	
-	def sleep(env)
+	def blocking(env)
+		Kernel::sleep(0.01)
+		
+		SMALL
+	end
+	
+	def nonblocking(env)
 		if defined? Async
 			Async::Task.current.sleep(0.01)
 		else
