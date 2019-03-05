@@ -5,8 +5,8 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/srv/http/benchmark
-ExecStart=puma --bind tcp://[::]:80
-# ExecStart=puma --workers 8 --bind tcp://[::]:80
+# ExecStart=puma --bind tcp://[::]:80
+ExecStart=puma --workers 8 --bind tcp://[::]:80
 Restart=on-failure
 
 [Install]
