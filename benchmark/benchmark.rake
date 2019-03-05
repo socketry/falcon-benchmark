@@ -11,6 +11,7 @@ namespace :benchmark do
 		"http://passenger",
 		"http://passenger-standalone",
 		"http://puma",
+		"http://cherrypy",
 	]
 	
 	def wrk(url)

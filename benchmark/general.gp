@@ -26,3 +26,6 @@ set style line 9 lt 2 lc rgb "red" lw 1 pt "⒞" pi -1 ps 1.5
 set style line 10 lt 2 lc rgb "#60aed6" lw 3
 set style line 11 lt 2 lc rgb "#60aed6" lw 1 dt 2
 set style line 12 lt 2 lc rgb "red" lw 1 pt "⒟" pi -1 ps 1.5
+set style line 13 lt 2 lc rgb "#ca5572" lw 3
+set style line 14 lt 2 lc rgb "#ca5572" lw 1 dt 2
+set style line 15 lt 2 lc rgb "red" lw 1 pt "⒟" pi -1 ps 1.5

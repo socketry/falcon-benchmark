@@ -1,0 +1,7 @@
+
+# Load all rake tasks:
+import(*Dir.glob('tasks/**/*.rake'))
+
+task :setup => [:network, :locale, :postgres] do
+	sh "systemctl enable cherrypy"
+end

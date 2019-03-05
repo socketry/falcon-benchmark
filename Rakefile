@@ -72,3 +72,21 @@ namespace :passenger_standalone do
 		sh "sudo systemd-nspawn --network-veth --boot -D passenger-standalone"
 	end
 end
+
+namespace :cherrypy do
+	task :base do
+		sh "mkdir -p cherrypy"
+		sh "sudo pacstrap -c cherrypy base base-devel postgresql git ruby ruby-rake python python-cherrypy"
+	end
+	
+	task :setup do
+		sh "sudo cp -r setup/base/* cherrypy/"
+		sh "sudo cp -r setup/cherrypy/* cherrypy/"
+
+		sh "sudo arch-chroot cherrypy rake setup"
+	end
+	
+	task :run do
+		sh "sudo systemd-nspawn --network-veth --boot -D cherrypy"
+	end
+end

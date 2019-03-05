@@ -1,0 +1,12 @@
+[Unit]
+Description=CherryPy
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/srv/http/benchmark
+ExecStart=python server.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
