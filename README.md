@@ -29,9 +29,13 @@ To run benchmarks:
 
 ![Graph](benchmark/large.svg)
 
-### Sleep Response Benchmark
+### Non-blocking Benchmark
 
-![Graph](benchmark/sleep.svg)
+![Graph](benchmark/nonblocking.svg)
+
+### Blocking Benchmark
+
+![Graph](benchmark/blocking.svg)
 
 ## System Details
 

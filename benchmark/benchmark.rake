@@ -14,7 +14,7 @@ namespace :benchmark do
 	]
 	
 	def wrk(url)
-		"wrk -s output.lua -c $x -t $x -d 1 #{url}"
+		"wrk -s output.lua -c $x -t $x -d 2 #{url}"
 	end
 	
 	def commands_for(name)
