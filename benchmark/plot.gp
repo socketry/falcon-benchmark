@@ -11,4 +11,7 @@ plot \
 	datafile using 1:($10 == 0 ? NaN : $10) with linespoints title "passenger errors" axis x1y1 ls 9, \
 	datafile using 1:11 with lines title "puma requests" axis x1y1 ls 10, \
 	datafile using 1:12 with lines title "puma latency" axis x1y2 ls 11, \
-	datafile using 1:($13 == 0 ? NaN : $13) with linespoints title "puma errors" axis x1y1 ls 12
+	datafile using 1:($13 == 0 ? NaN : $13) with linespoints title "puma errors" axis x1y1 ls 12, \
+	datafile using 1:14 with lines title "unicorn requests" axis x1y1 ls 13, \
+	datafile using 1:15 with lines title "unicorn latency" axis x1y2 ls 14, \
+	datafile using 1:($16 == 0 ? NaN : $16) with linespoints title "unicorn errors" axis x1y1 ls 15
