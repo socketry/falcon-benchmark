@@ -1,74 +1,97 @@
 
+require 'irb'
+
 load File.expand_path('benchmark/benchmark.rake', __dir__)
 
-namespace :falcon do
-	task :base do
-		sh "mkdir -p falcon"
-		sh "sudo pacstrap -c falcon base base-devel postgresql git ruby ruby-rake ruby-bundler"
-	end
-	
-	task :setup do
-		sh "sudo cp -r setup/base/* falcon/"
-		sh "sudo cp -r setup/falcon/* falcon/"
+INSTANCES = {
+	falcon: 'falcon',
+	passenger: 'passenger',
+	passenger_standalone: 'passenger-standalone',
+	puma: 'puma',
+	unicorn: 'unicorn',
+}
 
-		sh "sudo arch-chroot falcon rake setup"
-	end
-	
-	task :run do
-		sh "sudo systemd-nspawn --network-veth --boot -D falcon"
+BASE = %w{base base-devel postgresql git ruby ruby-rake ruby-bundler}
+
+PACKAGES = {
+	passenger: %w{nginx nginx-mod-passenger},
+	passenger_standalone: %w{passenger}
+}
+
+task :clean do
+	INSTANCES.each do |name, path|
+		if task = task.application.lookup(:"#{name}:stop")
+			task.invoke
+		end
+		
+		FileUtils::Dry.rm_rf(path)
 	end
 end
 
-namespace :passenger do
-	task :base do
-		sh "mkdir -p passenger"
-		sh "sudo pacstrap -c passenger base base-devel postgresql git ruby ruby-rake ruby-bundler nginx nginx-mod-passenger"
-	end
-	
-	task :setup do
-		sh "sudo cp -r setup/base/* passenger/"
-		sh "sudo cp -r setup/passenger/* passenger/"
+INSTANCES.each do |name, path|
+	namespace name do
+		task :root do
+			FileUtils.mkdir_p path
+		end
+		
+		task :base => :root do
+			sh "sudo", "pacstrap", "-c", path, *BASE, *PACKAGES[name]
+		end
+		
+		task :setup => :base do
+			sh "sudo cp -r setup/base/* #{path}/"
+			sh "sudo cp -r setup/#{path}/* #{path}/"
 
-		sh "sudo arch-chroot passenger rake setup"
-	end
-	
-	task :run do
-		sh "sudo systemd-nspawn --network-veth --boot -D passenger"
+			sh "sudo arch-chroot #{path} rake setup"
+		end
+		
+		task :stop do
+			sh "sudo", "machinectl", "stop", path.to_s
+			sh "sudo", "tmux", "kill-session", "-t", name.to_s
+		rescue
+			# Ignore
+		end
+		
+		task :start do
+			sh "sudo", "tmux", "new-session", "-d", "-s", name.to_s, "systemd-nspawn --network-veth --boot -D #{path}"
+		rescue
+			# Ignore
+		end
+		
+		task :attach do
+			sh "sudo", "tmux", "attach", "-t", name.to_s
+		end
+		
+		task :shell do
+			sh "sudo", "machinectl", "shell", path.to_s
+		end
+		
+		task :test do
+			sh "curl", "--output", "/dev/null", "http://#{path}/small"
+		end
 	end
 end
 
-namespace :puma do
-	task :base do
-		sh "mkdir -p puma"
-		sh "sudo pacstrap -c puma base base-devel postgresql git ruby ruby-rake ruby-bundler"
-	end
-	
-	task :setup do
-		sh "sudo cp -r setup/base/* puma/"
-		sh "sudo cp -r setup/puma/* puma/"
-
-		sh "sudo arch-chroot puma rake setup"
-	end
-	
-	task :run do
-		sh "sudo systemd-nspawn --network-veth --boot -D puma"
+task :setup do
+	INSTANCES.each do |name, path|
+		task.application[:"#{name}:setup"].invoke
 	end
 end
 
-namespace :passenger_standalone do
-	task :base do
-		sh "mkdir -p passenger-standalone"
-		sh "sudo pacstrap -c passenger-standalone base base-devel postgresql git ruby ruby-rake ruby-bundler passenger"
+task :stop do
+	INSTANCES.each do |name, path|
+		task.application[:"#{name}:stop"].invoke
 	end
-	
-	task :setup do
-		sh "sudo cp -r setup/base/* passenger-standalone/"
-		sh "sudo cp -r setup/passenger-standalone/* passenger-standalone/"
+end
 
-		sh "sudo arch-chroot passenger-standalone rake setup"
+task :start do
+	INSTANCES.each do |name, path|
+		task.application[:"#{name}:start"].invoke
 	end
-	
-	task :run do
-		sh "sudo systemd-nspawn --network-veth --boot -D passenger-standalone"
+end
+
+task :test do
+	INSTANCES.each do |name, path|
+		task.application[:"#{name}:test"].invoke
 	end
 end

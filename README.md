@@ -19,6 +19,12 @@ To run benchmarks:
 
 	rake benchmark:small benchmark:large benchmark:sleep
 
+### Latency Calculations
+
+By default `wrk` computes latency as the time from sending the first byte, to the time the response is received completely. This does not take into account if the server took time to `accept` the connection, which is typical if a server is highly contended, nor does it take into account connections where request are sent but responses are never received.
+
+In order to take these important factors into account, please use [this fork of wrk](https://github.com/ioquatix/wrk).
+
 ## Results
 
 ### Small Response Benchmark

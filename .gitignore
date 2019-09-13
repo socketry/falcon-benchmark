@@ -3,5 +3,5 @@
 /passenger/
 /puma/
 /passenger-standalone/
-/cherrypy/
+/unicorn/
 /systems/

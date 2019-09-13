@@ -1,12 +1,11 @@
 [Unit]
-Description=Puma
+Description=Unicorn
 After=network.target
 
 [Service]
 User=root
 WorkingDirectory=/srv/http/benchmark
-# ExecStart=puma --bind tcp://[::]:80
-ExecStart=puma --workers 8 --threads 1 --bind tcp://[::]:80
+ExecStart=unicorn -E production --host [::] --port 80 --config-file /etc/unicorn.rb
 Restart=on-failure
 
 [Install]
