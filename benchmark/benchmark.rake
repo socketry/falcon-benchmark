@@ -1,7 +1,7 @@
 
 namespace :benchmark do
 	PLOTTY = "plotty"
-	PATTERN = 'Rate: (\d+\.\d+)req/s; Latency: (\d+\.\d+)ms; Errors: (\d+\.\d+)req/s'
+	PATTERN = 'Rate: (\d+\.\d+)req/s; Latency: (\d+\.\d+)ms; Errors: (\d+\.\d+)err/s'
 	
 	X512 = '1,2,4,8,16,32,64,96,128,160,192,224,256,288,320,352,384,416,448,480,512'
 	X1024 = '1,2,4,8,16,32,64,96,128,160,192,224,256,288,320,352,384,416,448,480,512,544,576,608,640,672,704,736,768,800,832,864,896,928,960,992,1024'
@@ -11,10 +11,11 @@ namespace :benchmark do
 		"http://passenger",
 		"http://passenger-standalone",
 		"http://puma",
+		"http://unicorn",
 	]
 	
 	def wrk(url)
-		"wrk -s output.lua -c $x -t $x -d 2 #{url}"
+		"${WRK:-wrk} --timeout 10 -s output.lua -c $x -t $x -d 2 #{url}"
 	end
 	
 	def commands_for(name)
