@@ -1,0 +1,3 @@
+<content:page class="front">
+	<content:chart source="../benchmark/#{attributes[:name]}.csv" />
+</content:page>
