@@ -18,6 +18,8 @@
 		data = attributes[:data]
 		labels = data.labels
 		
+		concurrency = 10.times.map{|i| 2**i}
+		
 		datasets = []
 		data.each do |name, results|
 			fields.each do |field|
@@ -39,7 +41,7 @@
 		var chart = new Chart(context, {
 			type: 'line',
 			data: {
-				labels: #{Script.json labels},
+				labels: #{Script.json concurrency},
 				datasets: #{Script.json datasets},
 			},
 			options: {
