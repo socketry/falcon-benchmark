@@ -8,7 +8,7 @@ module Falcon
 			def self.all(root = ROOT)
 				data = self.new
 				
-				Dir.glob("*.json", base: root).map do |file|
+				Dir.glob("*-*-large.json", base: root).map do |file|
 					name = file.gsub(".json", "").split("-")
 					benchmark = JSON.load_file(File.join(root, file), symbolize_names: true)
 					
