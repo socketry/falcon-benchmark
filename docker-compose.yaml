@@ -1,0 +1,70 @@
+services:
+  falcon:
+    build:
+      context: .
+      dockerfile: falcon.dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: 8
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
+
+  puma:
+    build:
+      context: .
+      dockerfile: puma.dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: 8
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
+
+  unicorn:
+    build:
+      context: .
+      dockerfile: unicorn.dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: 8
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+
+  test:
+    build:
+      context: .
+      dockerfile: test.dockerfile
+    volumes:
+      - ./results/data:/app/data
+    depends_on:
+      - database
+      - falcon
+      - puma
+      - unicorn
+    deploy:
+      resources:
+        limits:
+          cpus: 8
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000

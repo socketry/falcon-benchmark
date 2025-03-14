@@ -12,13 +12,25 @@
 		<base href="#{first.node.uri_path}"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		
-		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
-		
 		<link rel="icon" type="image/png" href="/_static/icon.png" />
 		<link rel="stylesheet" href="/_static/site.css" type="text/css" media="screen" />
 		
-		<script src="/_components/chart.js/Chart.js"></script>
-		<link rel="stylesheet" href="/_components/chart.js/Chart.min.css" type="text/css" media="screen" />
+		<script type="importmap">
+			{
+				"imports": {
+					"@kurkle/color": "/_components/@kurkle/color/color.esm.js"
+				}
+			}
+		</script>
+		
+		<script type="module" src="/_components/chart.js/chart.js"></script>
+		
+		<script type="module">
+		// <![CDATA[
+			import {Chart, registerables} from '/_components/chart.js/chart.js';
+			Chart.register(...registerables);
+		// ]]>
+		</script>
 	</head>
 
 	<body class="#{attributes[:class]}">

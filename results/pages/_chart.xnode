@@ -1,78 +1,46 @@
 <div class="chart" style="margin: 1rem;">
-	<canvas></canvas>
-	<script>
-	//<![CDATA[
-		<?r
-			data = {}
-			
-			# https://medialab.github.io/iwanthue/
-			colors = [
-				"#638ccc",
-				"#c57c3c",
-				"#ab62c0",
-				"#72a555",
-				"#ca5670"
-			]
-			
-			labels = [
-				"falcon",
-				"passenger",
-				"passenger-standalone",
-				"puma",
-				"unicorn",
-			]
-			
-			fields = [
-				"Requests (/s)",
-				"Latency (ms)",
-				"Errors (/s)",
-			]
-			
-			axes = {
-				fields[0] => "rate",
-				fields[1] => "duration",
-				fields[2] => "rate",
-			}
-			
-			CSV.foreach(attributes[:source]) do |row|
-				concurrency, *values = row
-				record = data[concurrency] = {}
-				
-				labels.each do |label|
-					record[label] = fields.zip(values.shift(fields.size)).to_h
-				end
-			end
-		?>
+	<?r	id = "chart-#{SecureRandom.hex(8)}" ?>
+	<canvas id="#{id}"></canvas>
+	<?r
+		# https://medialab.github.io/iwanthue/
+		colors = {
+			"falcon" => "#8161cc",
+			"puma" => "#70a845",
+			"unicorn" => "#c568b6",
+			# "#4aac8d",
+			# "#c55072",
+			# "#b59141",
+			# "#688bcd",
+			# "#cc5f3f"
+		}
 		
-		var parent = document.currentScript.parentElement;
-		var context = parent.getElementsByTagName('canvas')[0].getContext('2d');
+		fields = attributes[:fields]
+		data = attributes[:data]
+		labels = data.labels
+		
+		datasets = []
+		data.each do |name, results|
+			fields.each do |field|
+				datasets << {
+					label: "#{name.join("-")} #{field.label}",
+					data: results.map{|result| field.value(result)},
+					borderColor: colors[name[0]],
+					yAxisID: field.type,
+				}
+			end
+		end
+	?>
+	<script type="module">
+	//<![CDATA[
+		import {Chart} from '/_components/chart.js/chart.js';
+		
+		var context = document.getElementById("#{id}").getContext('2d');
 		
 		var chart = new Chart(context, {
 			type: 'line',
 			data: {
-				labels: #{Script.json data.keys},
-				datasets: [
-					<?r labels.each_with_index do |label, index| ?>
-						<?r fields.each do |field| ?>
-						{
-							label: #{Script.json "#{label}: #{field}"},
-							yAxisID: #{Script.json "#{axes[field]}"},
-							data: #{Script.json data.map{|_, results| results[label][field]}},
-							borderColor: #{Script.json colors[index]},
-							fill: false,
-							<?r if field == fields[1] ?>
-								borderDash: [10, 2],
-								borderWidth: 1,
-							<?r end ?>
-							<?r if field == fields[2] ?>
-								pointBorderColor: 'red',
-								backgroundColor: 'rgba(255, 0, 0, 0.1)',
-								fill: true,
-							<?r end ?>
-						},
-						<?r end ?>
-					<?r end ?>
-				]
+				labels: #{Script.json labels},
+				datasets: #{Script.json datasets},
 			},
 			options: {
 				elements: {
@@ -81,17 +49,16 @@
 					}
 				},
 				scales: {
-					yAxes: [{
-						id: "rate",
+					rate: {
 						type: 'linear',
 						position: 'left',
 						ticks: {beginAtZero: true},
-					}, {
-						id: "duration",
+					},
+					duration: {
 						type: 'linear',
 						position: 'right',
 						ticks: {beginAtZero: true},
-					}]
+					}
 				}
 			}
 		});
