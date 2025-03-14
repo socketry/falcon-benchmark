@@ -8,7 +8,7 @@ module Falcon
 			def self.all(root = ROOT)
 				data = self.new
 				
-				Dir.glob("*-*-large.json", base: root).map do |file|
+				Dir.glob("*.json", base: root).map do |file|
 					name = file.gsub(".json", "").split("-")
 					benchmark = JSON.load_file(File.join(root, file), symbolize_names: true)
 					
@@ -18,10 +18,26 @@ module Falcon
 				return data
 			end
 			
-			def initialize(label = 0, benchmark = -1)
-				@label = label
-				@benchmark = benchmark
-				@dimensions = []
+			def initialize(dimensions = [])
+				@dimensions = dimensions
+			end
+			
+			def filters(index)
+				@dimensions.map do |name, _|
+					name.each_with_index.map do |value, i|
+						i == index ? value : "*"
+					end
+				end.sort.uniq
+			end
+			
+			def select(filter)
+				dimensions = @dimensions.select do |name, _|
+					filter.each_with_index.all? do |value, index|
+						value.nil? || name[index] == value
+					end
+				end
+				
+				return self.class.new(dimensions)
 			end
 			
 			def assign(name, results)
@@ -30,7 +46,7 @@ module Falcon
 			
 			def labels
 				@dimensions.map do |name, _|
-					name[@label]
+					name.join("-")
 				end
 			end
 			

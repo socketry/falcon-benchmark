@@ -1,3 +1,12 @@
 <content:page class="front">
+	<?r
+		data = attributes[:data]
+		
+		data.filters(2).each do |filter|
+	?>
+	<a href="/#{filter.join("/")}">#{filter.join(" / ")}</a>
+	<?r
+		end
+	?>
 	#{partial "content:chart", data: attributes[:data], name: attributes[:name], fields: attributes[:fields]}
 </content:page>
