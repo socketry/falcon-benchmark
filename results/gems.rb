@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 group :preload do
-	gem 'utopia', '~> 2.29'
+	gem 'utopia', '~> 2.30'
 	# gem 'utopia-gallery'
 	# gem 'utopia-analytics'
 	

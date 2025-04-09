@@ -9,7 +9,7 @@
 			<title>Utopia</title>
 		<?r end ?>
 		
-		<base href="#{first.node.uri_path}"/>
+		<base href="#{document.base_uri}"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		
 		<link rel="icon" type="image/png" href="/_static/icon.png" />
@@ -18,16 +18,15 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"@kurkle/color": "/_components/@kurkle/color/color.esm.js"
+					"chart.js": "./_components/chart.js/chart.js",
+					"@kurkle/color": "./_components/@kurkle/color/color.esm.js"
 				}
 			}
 		</script>
 		
-		<script type="module" src="/_components/chart.js/chart.js"></script>
-		
 		<script type="module">
 		// <![CDATA[
-			import {Chart, registerables} from '/_components/chart.js/chart.js';
+			import {Chart, registerables} from 'chart.js';
 			Chart.register(...registerables);
 		// ]]>
 		</script>

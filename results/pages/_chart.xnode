@@ -34,7 +34,7 @@
 	?>
 	<script type="module">
 	//<![CDATA[
-		import {Chart} from '/_components/chart.js/chart.js';
+		import {Chart} from 'chart.js';
 		
 		var context = document.getElementById("#{id}").getContext('2d');
 		
