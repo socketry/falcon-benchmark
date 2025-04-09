@@ -14,6 +14,7 @@ gem 'bake'
 gem 'bundler'
 gem 'rack-test'
 gem 'net-smtp'
+gem "rackula"
 
 group :production do
 	gem 'falcon'
