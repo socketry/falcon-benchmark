@@ -1,8 +1,8 @@
 <content:page class="front">
 	<?r
-		data = attributes[:data]
+		filters = attributes[:filters]
 		
-		data.filters(2).each do |filter|
+		filters.each do |filter|
 	?>
 	<a href="/#{filter.join("/")}">#{filter.join(" / ")}</a>
 	<?r

@@ -10,9 +10,9 @@ module Falcon
 				
 				Dir.glob("*.json", base: root).map do |file|
 					name = file.gsub(".json", "").split("-")
-					benchmark = JSON.load_file(File.join(root, file), symbolize_names: true)
+					results = JSON.load_file(File.join(root, file), symbolize_names: true)
 					
-					data.assign(name, benchmark[:results])
+					data.assign(name, results)
 				end
 				
 				return data
@@ -22,10 +22,11 @@ module Falcon
 				@dimensions = dimensions
 			end
 			
-			def filters(index)
+			# Generate a list of filters for the given prefix size, in other words, the first N dimensions are wildcards.
+			def filters(prefix_size)
 				@dimensions.map do |name, _|
 					name.each_with_index.map do |value, i|
-						i == index ? value : "*"
+						i < prefix_size ? "*" : value
 					end
 				end.sort.uniq
 			end

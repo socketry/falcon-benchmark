@@ -25,7 +25,7 @@ def all(output:)
 			file_name = "#{url.host}-#{url.scheme}#{url.path.gsub("/", "-")}.json"
 			output_file = File.join(output, file_name)
 			File.open(output_file, "w") do |file|
-				JSON.dump({url: url, results: results}, file)
+				JSON.dump(results, file)
 			end
 		end
 	end
@@ -46,7 +46,7 @@ def benchmark(url)
 		IO.pipe do |input, output|
 			threads = [concurrency, 8].min
 			
-			pid = Process.spawn("wrk", "--timeout", "10", "-s", "output.lua", "-c", concurrency.to_s, "-t", threads.to_s, "-d", "1", url, out: output)
+			pid = Process.spawn("wrk", "--timeout", "10", "-s", "output.lua", "-c", concurrency.to_s, "-t", threads.to_s, "-d", "6", url, out: output)
 			
 			output.close
 			

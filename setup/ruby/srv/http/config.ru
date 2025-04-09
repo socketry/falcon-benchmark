@@ -5,14 +5,22 @@ class Benchmark
 		@app = app
 	end
 	
+	def empty(env)
+		[204, {}, []]
+	end
+	
 	PATH_INFO = 'PATH_INFO'.freeze
 	
-	SMALL = [200, {}, ["Hello World\n" * 10] * 10].freeze
+	def hello(env)
+		[200, {}, ["Hello World!"]]
+	end
+	
+	SMALL_BODY = ["Hello World\n" * 10] * 10
 	
 	def blocking(env)
 		Kernel::sleep(0.01)
 		
-		SMALL
+		[200, {}, SMALL_BODY]
 	end
 	
 	def nonblocking(env)
@@ -22,17 +30,17 @@ class Benchmark
 			Kernel::sleep(0.01)
 		end
 		
-		SMALL
+		[200, {}, SMALL_BODY]
 	end
 	
 	def small(env)
-		SMALL
+		[200, {}, SMALL_BODY]
 	end
 	
-	LARGE = [200, {}, ["Hello World\n" * 100] * 100].freeze
+	LARGE_BODY = ["Hello World\n" * 100] * 100
 	
 	def large(env)
-		LARGE
+		[200, {}, LARGE_BODY]
 	end
 	
 	def call(env)

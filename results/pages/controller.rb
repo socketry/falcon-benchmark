@@ -6,6 +6,8 @@ require "falcon/benchmark/field"
 
 on '**' do |request, path|
 	@data = Falcon::Benchmark::Data.all
+	@filters = @data.filters(1)
+	
 	if path.components.any?
 		filter = path.components.map{|component| component == "*" ? nil : component}
 		@data = @data.select(filter)
