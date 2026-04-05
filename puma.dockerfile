@@ -3,5 +3,6 @@ COPY setup/ruby/ /
 COPY setup/puma/ /
 WORKDIR /srv/http
 RUN bundle install
+RUN chmod +x start.sh
 EXPOSE 80
-CMD ["puma", "-w", "8", "--bind", "tcp://0.0.0.0:80"]
+CMD ["./start.sh"]

@@ -1,12 +1,129 @@
 <content:page class="front">
 	<?r
-		filters = attributes[:filters]
-		
-		filters.each do |filter|
-	?>
-	<a href="/#{filter.join("/")}">#{filter.join(" / ")}</a>
-	<?r
+		all_data = {}
+		attributes[:data].each do |name, results|
+			server    = name[0]
+			benchmark = name[2]
+			all_data[server] ||= {}
+			all_data[server][benchmark] = results.map do |r|
+				{
+					concurrency: r[:concurrency],
+					requests:    r[:requests].to_f / r[:duration] * 1_000_000,
+					latency:     r[:latency][:mean] / 1_000_000,
+					errors:      r[:errors].to_f / r[:duration] * 1_000_000,
+				}
+			end
 		end
+		
+		servers    = all_data.keys.sort
+		benchmarks = all_data.values.flat_map { |b| b.keys }.uniq.sort
+		
+		colors = {
+			"falcon"    => "#8161cc",
+			"puma"      => "#70a845",
+			"unicorn"   => "#c568b6",
+			"pitchfork" => "#4aac8d",
+			"passenger" => "#c55072",
+		}
+		
+		concurrency = 10.times.map { |i| 2**i }
 	?>
-	#{partial "content:chart", data: attributes[:data], name: attributes[:name], fields: attributes[:fields]}
+	
+	<div class="controls">
+		<label>Servers
+			<select id="server-filter" multiple placeholder="All servers...">
+				<?r servers.each do |s| ?>
+				<option value="#{s}" selected>#{s.capitalize}</option>
+				<?r end ?>
+			</select>
+		</label>
+		<label>Benchmarks
+			<select id="benchmark-filter" multiple placeholder="All benchmarks...">
+				<?r benchmarks.each do |b| ?>
+				<option value="#{b}" selected>#{b.capitalize}</option>
+				<?r end ?>
+			</select>
+		</label>
+	</div>
+	
+	<div class="charts">
+		<div class="chart-container">
+			<h2>Request/s <span class="hint">(higher is better)</span></h2>
+			<canvas id="chart-requests"></canvas>
+		</div>
+		<div class="chart-container">
+			<h2>Latency (s) <span class="hint">(lower is better)</span></h2>
+			<canvas id="chart-latency"></canvas>
+		</div>
+	</div>
+	
+	<script type="module">
+	//<![CDATA[
+		import {Chart} from 'chart.js';
+		import TomSelect from 'tom-select';
+		
+		const allData     = #{Script.json all_data};
+		const colors      = #{Script.json colors};
+		const concurrency = #{Script.json concurrency};
+		
+		const borderDash = {
+			small:       [],
+			large:       [6, 3],
+			blocking:    [2, 3],
+			nonblocking: [10, 4],
+		};
+		
+		const serverSelect    = new TomSelect('#server-filter',    {plugins: ['remove_button'], onChange: updateCharts});
+		const benchmarkSelect = new TomSelect('#benchmark-filter', {plugins: ['remove_button'], onChange: updateCharts});
+		
+		function buildDatasets(servers, benchmarks, field) {
+			const datasets = [];
+			for (const [server, bmarks] of Object.entries(allData)) {
+				if (servers.length && !servers.includes(server)) continue;
+				for (const [benchmark, results] of Object.entries(bmarks)) {
+					if (benchmarks.length && !benchmarks.includes(benchmark)) continue;
+					datasets.push({
+						label:           server + ' / ' + benchmark,
+						data:            results.map(r => r[field]),
+						borderColor:     colors[server],
+						backgroundColor: colors[server],
+						borderDash:      borderDash[benchmark] || [],
+						tension:         0.1,
+						fill:            false,
+					});
+				}
+			}
+			return datasets;
+		}
+		
+		function makeChart(id, yLabel, field) {
+			return new Chart(document.getElementById(id), {
+				type: 'line',
+				data: {labels: concurrency, datasets: buildDatasets([], [], field)},
+				options: {
+					responsive: true,
+					interaction: {mode: 'index', intersect: false},
+					scales: {
+						x: {title: {display: true, text: 'Concurrency'}},
+						y: {title: {display: true, text: yLabel}, beginAtZero: true},
+					},
+				},
+			});
+		}
+		
+		const requestsChart = makeChart('chart-requests', 'Requests/s', 'requests');
+		const latencyChart  = makeChart('chart-latency',  'Latency (s)', 'latency');
+		
+		function updateCharts() {
+			const servers    = serverSelect.getValue();
+			const benchmarks = benchmarkSelect.getValue();
+			
+			requestsChart.data.datasets = buildDatasets(servers, benchmarks, 'requests');
+			requestsChart.update();
+			
+			latencyChart.data.datasets = buildDatasets(servers, benchmarks, 'latency');
+			latencyChart.update();
+		}
+	//]]>
+	</script>
 </content:page>

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "chart.js": "^4.4.8"
+    "chart.js": "^4.5.1",
+    "tom-select": "^2.5.2"
   }
 }

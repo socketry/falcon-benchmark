@@ -33,12 +33,9 @@ jobs:
         bundler-cache: true
         working-directory: results
     
-    - name: Installing packages
-      run: sudo apt-get install wget
-    
     - name: Generate documentation
       timeout-minutes: 5
-      run: cd results && bundle exec rackula --output-path ../pages
+      run: cd results && bundle exec rackula --base-url https://socketry.github.io/falcon-benchmark/ --output-path ../pages
     
     - name: Upload documentation artifact
       uses: actions/upload-pages-artifact@v3

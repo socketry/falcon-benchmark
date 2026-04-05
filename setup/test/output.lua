@@ -29,8 +29,8 @@ done = function(summary, latency, requests, threads)
 	-- Total number of connections:
 	local concurrency = summary.connections
 	local duration = summary.duration
-	local requests = summary.requests
 	local errors = summary.errors.total
+	local requests = summary.requests - errors
 	
 	local percentiles = {50, 75, 90, 95, 99, 100}
 	

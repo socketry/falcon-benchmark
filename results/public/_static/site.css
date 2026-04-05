@@ -51,6 +51,56 @@ body > header img {
 	height: 4rem;
 }
 
+.controls {
+	display: flex;
+	gap: 1.5rem;
+	align-items: flex-end;
+	padding: 1rem;
+	flex-wrap: wrap;
+}
+
+.controls label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	font-weight: bold;
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #555;
+	min-width: 16rem;
+}
+
+.controls select {
+	font-size: 1rem;
+	padding: 0.3rem 0.5rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: white;
+}
+
+.charts {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 0 1rem 1rem;
+}
+
+.chart-container h2 {
+	margin: 0 0 0.5rem 0;
+	font-size: 0.9rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #555;
+}
+
+.chart-container h2 .hint {
+	font-weight: normal;
+	text-transform: none;
+	letter-spacing: normal;
+	color: #999;
+}
+
 p, ul, ol {
 	color: #555;
 }

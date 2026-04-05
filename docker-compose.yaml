@@ -38,6 +38,32 @@ services:
         soft: 100000
         hard: 100000
 
+  pitchfork:
+    build:
+      context: .
+      dockerfile: pitchfork.dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: 8
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
+
+  passenger:
+    build:
+      context: .
+      dockerfile: passenger.dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: 8
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
+
   database:
     image: postgres:latest
     environment:
@@ -60,6 +86,8 @@ services:
       - falcon
       - puma
       - unicorn
+      - pitchfork
+      - passenger
     deploy:
       resources:
         limits:
@@ -68,3 +96,7 @@ services:
       nofile:
         soft: 100000
         hard: 100000
+    sysctls:
+      net.ipv4.ip_local_port_range: "1024 65535"
+      net.ipv4.tcp_tw_reuse: "1"
+      net.ipv4.tcp_fin_timeout: "15"

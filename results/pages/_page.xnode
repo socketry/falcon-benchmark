@@ -15,11 +15,17 @@
 		<link rel="icon" type="image/png" href="/_static/icon.png" />
 		<link rel="stylesheet" href="/_static/site.css" type="text/css" media="screen" />
 		
+		<link rel="stylesheet" href="/_components/tom-select/css/tom-select.default.min.css" />
+		
 		<script type="importmap">
 			{
 				"imports": {
 					"chart.js": "./_components/chart.js/chart.js",
-					"@kurkle/color": "./_components/@kurkle/color/color.esm.js"
+					"@kurkle/color": "./_components/@kurkle/color/color.esm.js",
+					
+					"@orchidjs/sifter": "./_components/@orchidjs/sifter/esm/sifter.js",
+					"@orchidjs/unicode-variants": "./_components/@orchidjs/unicode-variants/esm/index.js",
+					"tom-select": "./_components/tom-select/esm/tom-select.complete.js"
 				}
 			}
 		</script>
