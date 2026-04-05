@@ -22,6 +22,10 @@ Tear down containers when done:
 
 	bake clean
 
+Preview the results site locally:
+
+	bake server
+
 ### Latency Calculations
 
 By default `wrk` computes latency as the time from sending the first byte to when the response is received completely. This does not account for time the server spent waiting to `accept` the connection, which is significant under high contention.

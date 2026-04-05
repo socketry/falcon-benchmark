@@ -14,3 +14,9 @@ end
 def clean
 	system("docker compose down --remove-orphans")
 end
+
+def server
+	Bundler.with_unbundled_env do
+		system("bundle exec falcon serve", chdir: "results")
+	end
+end
