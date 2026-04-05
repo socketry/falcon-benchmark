@@ -16,7 +16,7 @@ end
 use Utopia::Static, root: 'public'
 
 use Utopia::Redirection::Rewrite, {
-	'/' => '/*'
+	'/' => '/index'
 }
 
 use Utopia::Redirection::DirectoryIndex

@@ -1,4 +1,4 @@
-name: Documentation
+name: Results
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
     
     - name: Generate documentation
       timeout-minutes: 5
-      run: cd results && bundle exec rackula --base-url https://socketry.github.io/falcon-benchmark/ --output-path ../pages
+      run: cd results && bundle exec rackula generate --output-path ../pages --force
     
     - name: Upload documentation artifact
       uses: actions/upload-pages-artifact@v3
