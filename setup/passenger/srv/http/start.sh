@@ -5,5 +5,5 @@ exec bundle exec passenger start \
   --min-instances 8 \
   --environment production \
   --disable-anonymous-telemetry \
-  --no-turbo-caching \
+  --disable-turbocaching \
   --log-file /dev/stdout
