@@ -64,6 +64,19 @@ services:
         soft: 100000
         hard: 100000
 
+  go:
+    build:
+      context: .
+      dockerfile: go.dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: 8
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
+
   database:
     image: postgres:latest
     environment:
@@ -88,6 +101,7 @@ services:
       - unicorn
       - pitchfork
       - passenger
+      - go
     deploy:
       resources:
         limits:

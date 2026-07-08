@@ -24,6 +24,7 @@
 			"unicorn"   => "#c568b6",
 			"pitchfork" => "#4aac8d",
 			"passenger" => "#c55072",
+			"go"        => "#b8863b",
 		}
 		
 		concurrency = 10.times.map { |i| 2**i }
