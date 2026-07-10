@@ -6,6 +6,7 @@ SERVERS = [
 	"http://unicorn",
 	"http://pitchfork",
 	"http://passenger",
+	"http://go",
 ]
 
 BENCHMARKS = [
